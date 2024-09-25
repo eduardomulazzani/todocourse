@@ -23,7 +23,16 @@ export const PageContainerSafeArea = styled.div`
     @media (max-width: 992px) {
         margin-left: 0;
         margin-right: 0;
-        padding: 8%;
+        padding: 4%;
     }
 
+`;
+
+export const ButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
 `;

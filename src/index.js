@@ -4,11 +4,21 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {RouterProvider} from "react-router-dom";
 import Router from "./router";
+import { GlobalContext } from './context/GlobalContext';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={Router} />
+    <GlobalContext.Provider value={{
+      toast
+    }}>
+      <RouterProvider router={Router} />
+
+      <ToastContainer />
+    </GlobalContext.Provider>
   </React.StrictMode>
 );
 

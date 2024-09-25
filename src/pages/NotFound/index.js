@@ -5,7 +5,7 @@ import {
 } from "./styled";
 
 const NotFound = () => {
-    return <NotFoundContainer><TbError404 size="30%"/></NotFoundContainer>;
+    return <NotFoundContainer><TbError404 size="30%" color="#8bc97b"/></NotFoundContainer>;
 };
 
 export default NotFound;

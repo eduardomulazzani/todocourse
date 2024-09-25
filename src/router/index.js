@@ -4,6 +4,7 @@ import {
 import Header from "../common/Header";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
+import CardDetails from "../pages/CardDetails";
 
 const Router = createBrowserRouter([
     {
@@ -16,10 +17,20 @@ const Router = createBrowserRouter([
         )
     },
     {
-        path: "/login",
+        path: "/createCard",
         element: (
             <>
                 <Header />
+                <CardDetails />
+            </>
+        )
+    },
+    {
+        path: "/cardDetails/:cardId",
+        element: (
+            <>
+                <Header />
+                <CardDetails />
             </>
         )
     },

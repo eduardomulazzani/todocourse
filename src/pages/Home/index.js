@@ -5,19 +5,16 @@ import {
     PageContainerSafeArea,
     ButtonsContainer
 } from "./styled";
-
-import { TodoList } from "../../mocks/todoList";
 import Button from "../../common/Button";
 import { GlobalContext } from "../../context/GlobalContext";
+
+import { TodoList } from "../../mocks/todoList";
+import EmptyList from "../EmptyList";
 
 const Home = () => {
     const {
         toast = () => {}
     } = useContext(GlobalContext);
-
-    const renderTodoList = () => {
-        return TodoList.map((card) => <TodoCard {...card} key={card.id} /> )
-    }
 
     return (
         <>  
@@ -43,7 +40,7 @@ const Home = () => {
                             text="Filter"
                         />
                     </ButtonsContainer>
-                    {renderTodoList()}
+                    {!TodoList.length ? <EmptyList /> : TodoList.map((card) => <TodoCard {...card} key={card.id} /> )}
                 </PageContainerSafeArea>
             </PageContainer>
         </>

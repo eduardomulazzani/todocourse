@@ -1,9 +1,9 @@
 import React from "react";
 import { InputStyled } from "./styled";
 
-const Input = ({value = ""}) => {
+const Input = ({value = "", onChange}) => {
 
-    return <InputStyled value={value}/>;
+    return <InputStyled onChange={onChange} value={value}/>;
 };
 
 export default Input;

@@ -1,28 +1,69 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useContext} from "react";
 import {
     PageContainer,
     PageContainerSafeArea,
     ButtonsContainer
 } from "./styled";
-import { useParams } from 'react-router-dom';
 import Input from "../../common/Input";
 import Label from "../../common/Label";
 import Button from "../../common/Button";
-
-import { TodoList } from "../../mocks/todoList";
+import { GlobalContext } from "../../context/GlobalContext";
+import api from "../../services/api";
 
 const CreateCard = () => {
-    const [ToDo, setToDo] = useState(null);
+    const {
+        toast = () => {}
+    } = useContext(GlobalContext);
 
-    const {cardId = ""} = useParams();
+    const [ToDo, setToDo] = useState({
+        title: "",
+        description: ""
+    });
 
-    useEffect(() => {
-        const card = TodoList.find(({id = null}) => id === parseInt(cardId));
+    const createTodo = async () => {
+        try{
+            const {title = "", description = ""} = ToDo;
 
-        console.log(card)
+            if(title && description) {
+                const payload = {};
 
-        if(card) setToDo(card);
-    }, [TodoList, cardId])
+                if(title) payload.title = title;
+                if(description) payload.description = description;
+
+                const createResponse = await api.post("/todo", payload);
+
+                const {status = 500} = createResponse;
+
+                if(status === 200) {
+                    toast.success(`Todo created success`, {
+                        position: "bottom-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+                    setTimeout(() => window.location.href = "/", 2000);
+                }
+            } else {
+                toast.warn(`Title or Subscription empty`, {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        }catch(err){
+            console.error(err);
+        }
+    }
 
     return (
         <>  
@@ -30,14 +71,24 @@ const CreateCard = () => {
                 <PageContainerSafeArea>
                     <ButtonsContainer>
                         <Label text="Title" />
-                        <Input value={ToDo ? ToDo.title : ""} />
+                        <Input
+                            value={ToDo.title}
+                            onChange={(event) => {
+                                setToDo({...ToDo, title: event.target.value});
+                            }}
+                        />
                     </ButtonsContainer>
                     <ButtonsContainer>
                         <Label text="Description" />
-                        <Input value={ToDo ? ToDo.description : ""} />
+                        <Input
+                            value={ToDo.description}
+                            onChange={(event) => {
+                                setToDo({...ToDo, description: event.target.value});
+                            }}
+                        />
                     </ButtonsContainer>
                     
-                    <Button text="Update Card"/>
+                    <Button text="Create Todo" onClick={() => createTodo()}/>
                 </PageContainerSafeArea>
             </PageContainer>
         </>

@@ -5,6 +5,7 @@ import Header from "../common/Header";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import CardDetails from "../pages/CardDetails";
+import CreateCard from "../pages/CreateCard";
 
 const Router = createBrowserRouter([
     {
@@ -21,7 +22,7 @@ const Router = createBrowserRouter([
         element: (
             <>
                 <Header />
-                <CardDetails />
+                <CreateCard />
             </>
         )
     },

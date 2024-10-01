@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useEffect, useState} from "react";
 import TodoCard from "../../common/todoCard";
 import {
     PageContainer,
@@ -6,15 +6,35 @@ import {
     ButtonsContainer
 } from "./styled";
 import Button from "../../common/Button";
-import { GlobalContext } from "../../context/GlobalContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import { TodoList } from "../../mocks/todoList";
 import EmptyList from "../EmptyList";
 
+import api from "../../services/api";
+
 const Home = () => {
-    const {
-        toast = () => {}
-    } = useContext(GlobalContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [TodoList, setTodoList] = useState([]);
+
+    const getListTodos = async () => {
+        try{
+            const todoResponse = await api.get("/todo");
+
+            const {data = []} = todoResponse;
+
+            setTodoList(data);
+
+            console.log("list todos", data);
+        }catch(err){
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        getListTodos();
+    }, [location]);
 
     return (
         <>  
@@ -23,24 +43,13 @@ const Home = () => {
                     <ButtonsContainer>
                         <Button
                             text="Add Task"
-                            onClick={() => {
-                                toast.success('Task Created', {
-                                    position: "bottom-left",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "light",
-                                });
-                            }}
+                            onClick={() => navigate(`/createCard`)}
                         />
-                        <Button
+                        {/*<Button
                             text="Filter"
-                        />
+                        />*/}
                     </ButtonsContainer>
-                    {!TodoList.length ? <EmptyList /> : TodoList.map((card) => <TodoCard {...card} key={card.id} /> )}
+                    {!TodoList.length ? <EmptyList /> : TodoList.map((card) => <TodoCard {...card} setTodoList={setTodoList} key={card._id} /> )}
                 </PageContainerSafeArea>
             </PageContainer>
         </>
